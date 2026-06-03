@@ -1,0 +1,10 @@
+# Replace yourdomain.com with your real domain (A record must point at the VPS).
+# Caddy automatically obtains + renews a free HTTPS certificate.
+yourdomain.com {
+    root * /var/www/scorepoll/dist
+    encode gzip
+
+    # SPA fallback: serve index.html for client routes like /vote?m=...
+    try_files {path} /index.html
+    file_server
+}
