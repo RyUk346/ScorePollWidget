@@ -1,13 +1,14 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 
-// The QR scanner needs camera access, which browsers only grant on
-// https:// or localhost. `npm run dev` serves on localhost (fine), and
-// `npm run preview --host` lets you open the vote page on a phone over LAN.
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: true,
-    port: 5173,
-  },
+// `base` controls the path the app is served under. Leave it "/" for local dev;
+// set VITE_BASE_PATH=/hg_score_poll/ in .env to serve under a subpath on the
+// VPS (must start and end with a slash). The router + QR read this automatically.
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  return {
+    base: env.VITE_BASE_PATH || "/",
+    plugins: [react()],
+    server: { host: true, port: 5173 },
+  };
 });

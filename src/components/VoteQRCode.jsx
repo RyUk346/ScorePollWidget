@@ -9,9 +9,13 @@ import { QRCodeCanvas } from "qrcode.react";
  * served on. `compact` renders just the code + a tiny label for the widget bar.
  */
 export default function VoteQRCode({ matchId, size = 180, compact = false }) {
-  const base =
-    import.meta.env.VITE_PUBLIC_URL?.replace(/\/$/, "") ||
-    window.location.origin;
+  // Prefer VITE_PUBLIC_URL (should include any subpath, e.g.
+  // https://host/hg_score_poll). Otherwise build it from the current origin +
+  // the app's base path so it works under a subpath without extra config.
+  const base = (
+    import.meta.env.VITE_PUBLIC_URL ||
+    window.location.origin + import.meta.env.BASE_URL
+  ).replace(/\/$/, "");
   const voteUrl = matchId
     ? `${base}/vote?m=${encodeURIComponent(matchId)}`
     : `${base}/vote`;

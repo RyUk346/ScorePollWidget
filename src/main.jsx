@@ -5,9 +5,13 @@ import MainScreen from "./pages/MainScreen.jsx";
 import VotePage from "./pages/VotePage.jsx";
 import "./index.css";
 
+// Strip the trailing slash from Vite's BASE_URL ("/hg_score_poll/" -> "/hg_score_poll",
+// "/" -> "") so the router resolves routes under the subpath.
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/" element={<MainScreen />} />
         <Route path="/vote" element={<VotePage />} />
