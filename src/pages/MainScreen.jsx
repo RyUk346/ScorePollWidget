@@ -66,7 +66,7 @@ export default function MainScreen() {
   const showScore = hasScore(match);
 
   return (
-    <div className="min-h-screen flex flex-col justify-end items-center p-4 gap-2">
+    <div className="flex flex-col items-center p-4 gap-2">
       <div className="relative flex items-center h-[280px] gap-[18px] w-full rounded-[28px] px-5 py-4 bg-white/10 backdrop-blur-2xl border border-white/20 overflow-hidden [box-shadow:inset_0_1px_1px_rgba(255,255,255,0.45),inset_0_-1px_1px_rgba(255,255,255,0.12),0_24px_60px_-12px_rgba(0,0,0,0.6)]">
         {/* iOS-style top sheen highlight */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/15 to-transparent" />
