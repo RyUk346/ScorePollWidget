@@ -75,10 +75,7 @@ export default function MainScreen() {
 
   return (
     <div className="flex flex-col items-center p-4 gap-2">
-      <div className="relative flex items-center h-[170px] gap-4 w-full rounded-3xl px-4 py-3 bg-black/40 backdrop-blur-2xl border border-white/20 overflow-hidden [box-shadow:inset_0_1px_1px_rgba(255,255,255,0.45),inset_0_-1px_1px_rgba(255,255,255,0.12),0_12px_60px_-12px_rgba(0,0,0,0.6)]">
-        {/* iOS-style top sheen highlight */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/15 to-transparent" />
-
+      <div className="relative flex items-center h-[170px] gap-4 w-full rounded-3xl px-4 py-3 bg-black/40 backdrop-blur-2xl border border-white/20 overflow-hidden [box-shadow:inset_0_-1px_1px_rgba(255,255,255,0.12),0_12px_60px_-12px_rgba(0,0,0,0.6)]">
         {isIntro ? (
           <>
             {/* QR — left */}
@@ -89,7 +86,7 @@ export default function MainScreen() {
             {/* Headline — center */}
             <div className="relative z-10 flex-1 flex items-center justify-center px-2">
               <span className="text-center font-black text-ink leading-[1.1] text-[2.2rem] [text-shadow:0_2px_4px_rgba(0,0,0,0.55)]">
-                Scan the QR code to support your team
+                Scan QR code &amp; to support your team
               </span>
             </div>
 
