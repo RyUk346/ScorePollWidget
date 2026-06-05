@@ -22,6 +22,22 @@ const hasScore = (m) =>
   m.score &&
   (m.status === "IN_PLAY" || m.status === "PAUSED" || m.status === "FINISHED");
 
+// True on large displays (≥1680px wide) — used to render the QR canvas bigger.
+// Layout sizing is handled with Tailwind's min-[1680px]: variants.
+function useWide() {
+  const query = "(min-width: 1680px)";
+  const [wide, setWide] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(query).matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = (e) => setWide(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return wide;
+}
+
 export default function MainScreen() {
   const all = useFixtures();
   const [tick, setTick] = useState(0);
@@ -72,20 +88,22 @@ export default function MainScreen() {
     : 0;
   const showScore = match && hasScore(match);
   const logoUrl = `${import.meta.env.BASE_URL}fifa_2026.png`;
+  const wide = useWide();
+  const qrSize = wide ? 248 : 124;
 
   return (
-    <div className="flex flex-col items-center p-4 gap-2">
-      <div className="relative flex items-center h-[170px] gap-4 w-full rounded-3xl px-4 py-3 bg-black/40 backdrop-blur-2xl border border-white/20 overflow-hidden ">
+    <div className="flex flex-col items-center p-4 gap-2 min-[1680px]:p-8 min-[1680px]:gap-4">
+      <div className="relative flex items-center h-[170px] gap-4 w-full rounded-3xl px-4 py-3 bg-black/40 backdrop-blur-2xl border border-white/20 overflow-hidden min-[1680px]:h-[340px] min-[1680px]:gap-8 min-[1680px]:px-8 min-[1680px]:py-6 min-[1680px]:rounded-[44px]">
         {isIntro ? (
           <>
             {/* QR — left */}
             <div className="shrink-0 relative">
-              <VoteQRCode size={124} compact />
+              <VoteQRCode size={qrSize} compact />
             </div>
 
             {/* Headline — center */}
             <div className="relative z-10 flex-1 flex items-center justify-center px-2">
-              <span className="text-center font-black text-ink leading-[1.1] text-[2.2rem] [text-shadow:0_2px_4px_rgba(0,0,0,0.55)]">
+              <span className="text-center font-black text-ink leading-[1.1] text-[2.2rem] min-[1680px]:text-[4.4rem] [text-shadow:0_2px_4px_rgba(0,0,0,0.55)]">
                 Scan QR Code &amp; Support Your Team
               </span>
             </div>
@@ -97,17 +115,17 @@ export default function MainScreen() {
                   src={logoUrl}
                   onError={() => setLogoOk(false)}
                   alt="FIFA World Cup 2026"
-                  className="max-h-[140px] max-w-[160px] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
+                  className="max-h-[140px] max-w-[160px] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)] min-[1680px]:max-h-[280px] min-[1680px]:max-w-[330px]"
                 />
               ) : (
                 <div className="flex flex-col items-center text-center leading-none">
-                  <span className="text-[10px] tracking-[0.4em] text-muted">
+                  <span className="text-[10px] tracking-[0.4em] text-muted min-[1680px]:text-[20px]">
                     FIFA
                   </span>
-                  <span className="text-xl font-black tracking-tight text-ink [text-shadow:0_1px_3px_rgba(0,0,0,0.55)]">
+                  <span className="text-xl font-black tracking-tight text-ink [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] min-[1680px]:text-4xl">
                     WORLD CUP
                   </span>
-                  <span className="text-[1.6rem] font-black text-accent [text-shadow:0_1px_3px_rgba(0,0,0,0.55)]">
+                  <span className="text-[1.6rem] font-black text-accent [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] min-[1680px]:text-[3.2rem]">
                     2026
                   </span>
                 </div>
@@ -117,11 +135,11 @@ export default function MainScreen() {
         ) : (
           <>
             <div className="shrink-0 relative">
-              <VoteQRCode matchId={match.id} size={124} compact />
+              <VoteQRCode matchId={match.id} size={qrSize} compact />
             </div>
 
-            <div className="relative z-10 flex-1 min-w-0 flex flex-col gap-1.5">
-              <div className="flex items-baseline gap-2.5 text-[11px]">
+            <div className="relative z-10 flex-1 min-w-0 flex flex-col gap-1.5 min-[1680px]:gap-3">
+              <div className="flex items-baseline gap-2.5 text-[11px] min-[1680px]:text-[22px] min-[1680px]:gap-5">
                 <span className="font-bold tracking-wide text-ink">
                   {TOURNAMENT.name}
                 </span>
@@ -140,7 +158,7 @@ export default function MainScreen() {
                 </span>
               </div>
 
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1.5 min-[1680px]:gap-3">
                 {match.teams.map((team, i) => {
                   const count = votes[team.code] || 0;
                   const pct = total ? (count / total) * 100 : 0;
@@ -153,40 +171,40 @@ export default function MainScreen() {
                   return (
                     <div
                       key={team.code || i}
-                      className="grid grid-cols-[88px_1fr] items-center gap-3"
+                      className="grid grid-cols-[88px_1fr] items-center gap-3 min-[1680px]:grid-cols-[176px_1fr] min-[1680px]:gap-6"
                     >
-                      <div className="relative w-[88px] h-[52px]">
+                      <div className="relative w-[88px] h-[52px] min-[1680px]:w-[176px] min-[1680px]:h-[104px]">
                         {team.flag ? (
                           <img
-                            className="w-[88px] h-[52px] object-cover rounded ring-1 ring-white/15"
+                            className="w-[88px] h-[52px] object-cover rounded ring-1 ring-white/15 min-[1680px]:w-[176px] min-[1680px]:h-[104px] min-[1680px]:rounded-lg"
                             src={team.flag}
                             alt={`${team.name} flag`}
                           />
                         ) : (
-                          <span className="w-[88px] h-[52px] rounded bg-track text-muted font-extrabold flex items-center justify-center">
+                          <span className="w-[88px] h-[52px] rounded bg-track text-muted font-extrabold flex items-center justify-center min-[1680px]:w-[176px] min-[1680px]:h-[104px]">
                             ?
                           </span>
                         )}
                         {goals != null && (
-                          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-md bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-xs flex items-center justify-center tabular-nums [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+                          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-md bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-xs flex items-center justify-center tabular-nums [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] min-[1680px]:-top-3 min-[1680px]:-right-3 min-[1680px]:min-w-[40px] min-[1680px]:h-10 min-[1680px]:px-2 min-[1680px]:text-2xl min-[1680px]:rounded-lg">
                             {goals}
                           </span>
                         )}
                       </div>
-                      <div className="flex flex-col gap-1 min-w-0">
-                        <div className="flex items-baseline gap-2 min-w-0">
-                          <span className="font-bold text-[0.95rem] leading-tight text-ink truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.4)]">
+                      <div className="flex flex-col gap-1 min-w-0 min-[1680px]:gap-2">
+                        <div className="flex items-baseline gap-2 min-w-0 min-[1680px]:gap-4">
+                          <span className="font-bold text-[0.95rem] leading-tight text-ink truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.4)] min-[1680px]:text-[1.9rem]">
                             {team.name}
                           </span>
                           <span
-                            className={`ml-auto font-extrabold tabular-nums text-[0.95rem] ${
+                            className={`ml-auto font-extrabold tabular-nums text-[0.95rem] min-[1680px]:text-[1.9rem] ${
                               isLeader ? "text-green-400" : "text-ink"
                             }`}
                           >
                             {pct.toFixed(0)}%
                           </span>
                         </div>
-                        <div className="h-7 rounded-full overflow-hidden bg-black/20 border border-white/15 [box-shadow:inset_0_1px_3px_rgba(0,0,0,0.35)]">
+                        <div className="h-7 rounded-full overflow-hidden bg-black/20 border border-white/15 [box-shadow:inset_0_1px_3px_rgba(0,0,0,0.35)] min-[1680px]:h-14">
                           <div
                             className="h-full rounded-full transition-[width] duration-700 ease-out [box-shadow:inset_0_1px_1px_rgba(255,255,255,0.55),inset_0_-2px_3px_rgba(0,0,0,0.2)]"
                             style={{
@@ -208,13 +226,13 @@ export default function MainScreen() {
 
       {slideCount > 1 && (
         <div
-          className="flex gap-[7px] items-center"
+          className="flex gap-[7px] items-center min-[1680px]:gap-3"
           aria-label={`Slide ${index + 1} of ${slideCount}`}
         >
           {Array.from({ length: slideCount }).map((_, i) => (
             <span
               key={i}
-              className={`w-[7px] h-[7px] rounded-full transition-all ${
+              className={`w-[7px] h-[7px] rounded-full transition-all min-[1680px]:w-[14px] min-[1680px]:h-[14px] ${
                 i === index ? "bg-accent scale-125" : "bg-line"
               }`}
             />
