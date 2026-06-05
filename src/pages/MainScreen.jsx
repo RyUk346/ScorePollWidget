@@ -67,12 +67,15 @@ export default function MainScreen() {
 
   return (
     <div className="min-h-screen flex flex-col justify-end items-center p-4 gap-2">
-      <div className="flex items-center h-[280px] gap-[18px] w-full bg-base/90 border border-line rounded-2xl px-4 py-3 shadow-2xl backdrop-blur-sm">
-        <div className="shrink-0">
+      <div className="relative flex items-center h-[280px] gap-[18px] w-full rounded-[28px] px-5 py-4 bg-white/10 backdrop-blur-2xl border border-white/20 overflow-hidden [box-shadow:inset_0_1px_1px_rgba(255,255,255,0.45),inset_0_-1px_1px_rgba(255,255,255,0.12),0_24px_60px_-12px_rgba(0,0,0,0.6)]">
+        {/* iOS-style top sheen highlight */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/15 to-transparent" />
+
+        <div className="shrink-0 relative">
           <VoteQRCode matchId={match.id} size={200} compact />
         </div>
 
-        <div className="flex-1 min-w-0 flex flex-col gap-2">
+        <div className="relative z-10 flex-1 min-w-0 flex flex-col gap-2">
           <div className="flex items-baseline gap-2.5 text-xs">
             <span className="font-bold tracking-wide text-ink">
               {TOURNAMENT.name}
@@ -120,16 +123,25 @@ export default function MainScreen() {
                       </span>
                     )}
                     {goals != null && (
-                      <span className="absolute -top-1.5 -right-1.5 min-w-[24px] h-6 px-1 rounded-md bg-base/95 border border-line text-ink font-extrabold text-sm flex items-center justify-center tabular-nums">
+                      <span className="absolute -top-1.5 -right-1.5 min-w-[24px] h-6 px-1 rounded-md bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-sm flex items-center justify-center tabular-nums [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
                         {goals}
                       </span>
                     )}
                   </div>
-                  <div className="h-6 bg-track border border-line rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-[width] duration-700 ease-out"
-                      style={{ width: `${pct}%`, background: team.color }}
-                    />
+                  <div className="flex flex-col gap-1.5 min-w-0">
+                    <span className="font-bold text-[1.05rem] text-ink truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.4)]">
+                      {team.name}
+                    </span>
+                    <div className="h-10 rounded-full overflow-hidden bg-black/20 border border-white/15 [box-shadow:inset_0_1px_3px_rgba(0,0,0,0.35)]">
+                      <div
+                        className="h-full rounded-full transition-[width] duration-700 ease-out [box-shadow:inset_0_1px_1px_rgba(255,255,255,0.55),inset_0_-2px_3px_rgba(0,0,0,0.2)]"
+                        style={{
+                          width: `${pct}%`,
+                          background:
+                            "linear-gradient(180deg, rgba(226,229,236,0.95), rgba(150,156,176,0.92))",
+                        }}
+                      />
+                    </div>
                   </div>
                   <span
                     className={`text-right font-extrabold tabular-nums text-[0.95rem] ${

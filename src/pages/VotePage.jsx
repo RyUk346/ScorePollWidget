@@ -39,7 +39,8 @@ export default function VotePage() {
   const closed = all.filter((m) => !isVotingOpen(m, nowDate)).sort(byKickoff);
 
   return (
-    <div className="max-w-[520px] mx-auto px-4 pt-5 pb-7 min-h-screen flex flex-col">
+    <div className="page-bg min-h-screen w-full">
+      <div className="max-w-[520px] mx-auto px-4 pt-5 pb-7 min-h-screen flex flex-col">
       <header className="flex items-center justify-between border-b border-line pb-3">
         <span className="font-bold text-ink">{TOURNAMENT.name}</span>
         <span className="text-xs text-muted uppercase tracking-widest bg-panel border border-line px-2.5 py-1 rounded-full">
@@ -104,6 +105,7 @@ export default function VotePage() {
           </p>
         </>
       )}
+      </div>
     </div>
   );
 }

@@ -10,9 +10,16 @@ body,
 }
 
 body {
-  background: radial-gradient(1200px 600px at 50% -10%, #1a2348, #0b1020);
+  /* No global background — the main screen is transparent so a background
+     image/stream can show through. The vote page sets its own background. */
+  background: transparent;
   color: #eef1fb;
   font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial,
     sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Dark backdrop used only on the vote page. */
+.page-bg {
+  background: radial-gradient(1200px 600px at 50% -10%, #1a2348, #0b1020);
 }
