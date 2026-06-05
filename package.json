@@ -10,7 +10,8 @@
     "preview": "vite preview --host",
     "poll": "node server/poll-worldcup.mjs",
     "live": "node server/check-live.mjs",
-    "comps": "node server/list-competitions.mjs"
+    "comps": "node server/list-competitions.mjs",
+    "reset-votes": "node server/reset-votes.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

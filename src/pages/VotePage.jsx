@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import {
   TOURNAMENT,
   getUpcomingDaysAll,
@@ -35,76 +35,81 @@ export default function VotePage() {
 
   const open = all
     .filter((m) => isVotingOpen(m, nowDate))
-    .sort((a, b) => (a.id === scannedId ? -1 : b.id === scannedId ? 1 : byKickoff(a, b)));
+    .sort((a, b) =>
+      a.id === scannedId ? -1 : b.id === scannedId ? 1 : byKickoff(a, b),
+    );
   const closed = all.filter((m) => !isVotingOpen(m, nowDate)).sort(byKickoff);
 
   return (
     <div className="page-bg min-h-screen w-full">
       <div className="max-w-[520px] mx-auto px-4 pt-5 pb-7 min-h-screen flex flex-col">
-      <header className="flex items-center justify-between border-b border-line pb-3">
-        <span className="font-bold text-ink">{TOURNAMENT.name}</span>
-        <span className="text-xs text-muted uppercase tracking-widest bg-panel border border-line px-2.5 py-1 rounded-full">
-          Today &amp; tomorrow
-        </span>
-      </header>
+        <div className="flex items-center justify-center gap-2 pb-8">
+          <span className="text-[11px] uppercase tracking-widest text-muted">
+            Powered by
+          </span>
+          <img
+            src={`${import.meta.env.BASE_URL}hyperglow-logo.webp`}
+            alt="HyperGlow"
+            className="h-14 object-contain"
+          />
+        </div>
+        <header className="flex items-center justify-between border-b border-line pb-3">
+          <span className="font-bold text-ink">{TOURNAMENT.name}</span>
+          <span className="text-xs text-muted uppercase tracking-widest bg-panel border border-line px-2.5 py-1 rounded-full">
+            Today &amp; tomorrow
+          </span>
+        </header>
 
-      {all.length === 0 ? (
-        <p className="text-center text-muted mt-10">
-          No matches to vote on right now. Check back on a match day.
-        </p>
-      ) : (
-        <>
-          <p className="text-center text-muted text-sm mt-2 mb-[18px]">
-            {open.length > 0
-              ? `${open.length} match${open.length === 1 ? "" : "es"} open for voting`
-              : "voting closed for these matches"}
+        {all.length === 0 ? (
+          <p className="text-center text-muted mt-10">
+            No matches to vote on right now. Check back on a match day.
           </p>
+        ) : (
+          <>
+            <p className="text-center text-muted text-sm mt-2 mb-[18px]">
+              {open.length > 0
+                ? `${open.length} match${open.length === 1 ? "" : "es"} open for voting`
+                : "voting closed for these matches"}
+            </p>
 
-          {open.length > 0 && (
-            <div className="flex flex-col gap-3.5">
-              {open.map((m) => (
-                <MatchVoteCard
-                  key={m.id}
-                  match={m}
-                  now={now}
-                  highlight={m.id === scannedId}
-                />
-              ))}
-            </div>
-          )}
+            {open.length > 0 && (
+              <div className="flex flex-col gap-3.5">
+                {open.map((m) => (
+                  <MatchVoteCard
+                    key={m.id}
+                    match={m}
+                    now={now}
+                    highlight={m.id === scannedId}
+                  />
+                ))}
+              </div>
+            )}
 
-          {closed.length > 0 && (
-            <div className="mt-5">
-              <button
-                onClick={() => setShowClosed((s) => !s)}
-                className="w-full flex items-center justify-between text-sm text-muted bg-panel border border-line rounded-xl px-3.5 py-2.5 hover:border-accent transition"
-              >
-                <span>
-                  Finished / closed today ({closed.length})
-                </span>
-                <span className={`transition-transform ${showClosed ? "rotate-180" : ""}`}>
-                  ⌄
-                </span>
-              </button>
+            {closed.length > 0 && (
+              <div className="mt-5">
+                <button
+                  onClick={() => setShowClosed((s) => !s)}
+                  className="w-full flex items-center justify-between text-sm text-muted bg-panel border border-line rounded-xl px-3.5 py-2.5 hover:border-accent transition"
+                >
+                  <span>Finished / closed today ({closed.length})</span>
+                  <span
+                    className={`transition-transform ${showClosed ? "rotate-180" : ""}`}
+                  >
+                    ⌄
+                  </span>
+                </button>
 
-              {showClosed && (
-                <div className="flex flex-col gap-3.5 mt-3.5">
-                  {closed.map((m) => (
-                    <MatchVoteCard key={m.id} match={m} now={now} />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          <p className="text-center text-muted mt-[18px]">
-            Live results show on the main screen.{" "}
-            <Link to="/" className="text-accent font-bold">
-              View results
-            </Link>
-          </p>
-        </>
-      )}
+                {showClosed && (
+                  <div className="flex flex-col gap-3.5 mt-3.5">
+                    {closed.map((m) => (
+                      <MatchVoteCard key={m.id} match={m} now={now} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

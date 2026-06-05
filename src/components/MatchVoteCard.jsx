@@ -11,13 +11,6 @@ const readVoted = (id) => {
   }
 };
 
-const statusBadge = (m) => {
-  if (m.status === "IN_PLAY") return m.minute ? `LIVE ${m.minute}'` : "LIVE";
-  if (m.status === "PAUSED") return "HT";
-  if (m.status === "FINISHED") return "FT";
-  return null;
-};
-
 const showScore = (m) =>
   m.score && (m.status === "IN_PLAY" || m.status === "PAUSED" || m.status === "FINISHED");
 
@@ -35,8 +28,6 @@ export default function MatchVoteCard({ match, now, highlight = false }) {
   useEffect(() => subscribeVotes(match.id, setVotes), [match.id]);
 
   const open = isVotingOpen(match, new Date(now));
-  const total = match.teams.reduce((s, t) => s + (votes[t.code] || 0), 0);
-  const badge = statusBadge(match);
   const scored = showScore(match);
 
   const confirm = async () => {
@@ -63,20 +54,11 @@ export default function MatchVoteCard({ match, now, highlight = false }) {
     >
       <div className="flex items-center gap-2 mb-3 text-[0.78rem]">
         <span className="font-bold text-ink">{match.label}</span>
-        <span className="text-muted">{fmtKickoffUK(match.kickoff)}</span>
-        <span
-          className={`ml-auto font-bold text-[0.68rem] uppercase tracking-wide px-2.5 py-[3px] rounded-full ${
-            open ? "bg-accent/20 text-[#9cc0ff]" : "bg-track text-muted"
-          }`}
-        >
-          {badge || (open ? "Open" : "Closed")}
-        </span>
+        <span className="ml-auto text-muted">{fmtKickoffUK(match.kickoff)}</span>
       </div>
 
       <div className="grid grid-cols-2 gap-2.5">
         {match.teams.map((team, i) => {
-          const count = votes[team.code] || 0;
-          const pct = total ? Math.round((count / total) * 100) : 0;
           const voted = team.code && myVotes.has(team.code);
           const goals = scored ? (i === 0 ? match.score.home : match.score.away) : null;
           return (
@@ -109,9 +91,6 @@ export default function MatchVoteCard({ match, now, highlight = false }) {
               <span className="font-bold text-[0.95rem] text-center">
                 {team.name}
               </span>
-              <span className="font-extrabold text-[1.05rem] tabular-nums">
-                {pct}%
-              </span>
               {voted && (
                 <span className="absolute top-2 right-2 w-[22px] h-[22px] rounded-full bg-accent text-white flex items-center justify-center text-[0.7rem]">
                   ✓
@@ -121,12 +100,6 @@ export default function MatchVoteCard({ match, now, highlight = false }) {
           );
         })}
       </div>
-
-      <p className="text-center text-muted text-xs mt-2.5">
-        {open
-          ? `Vote as many times as you like · ${total.toLocaleString()} votes`
-          : `Voting closed · ${total.toLocaleString()} votes`}
-      </p>
 
       {pending && (
         <div
