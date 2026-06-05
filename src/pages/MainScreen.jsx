@@ -80,7 +80,7 @@ export default function MainScreen() {
           <>
             {/* QR — left */}
             <div className="shrink-0 relative">
-              <VoteQRCode size={114} compact />
+              <VoteQRCode size={124} compact />
             </div>
 
             {/* Headline — center */}
