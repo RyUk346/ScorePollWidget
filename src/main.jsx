@@ -14,6 +14,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/" element={<MainScreen />} />
+        <Route path="/2k" element={<MainScreen big={false} />} />
+        <Route path="/4k" element={<MainScreen big={true} />} />
         <Route path="/vote" element={<VotePage />} />
       </Routes>
     </BrowserRouter>
