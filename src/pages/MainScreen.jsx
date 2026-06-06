@@ -23,11 +23,11 @@ const hasScore = (m) =>
   (m.status === "IN_PLAY" || m.status === "PAUSED" || m.status === "FINISHED");
 
 // True on large displays (≥1680px wide) — used to render the QR canvas bigger.
-// Layout sizing is handled with Tailwind's [@media(min-height:1200px)]: variants.
+// Layout sizing is handled with Tailwind's min-[1921px]: variants.
 function useWide() {
-  // 1080p (and smaller) screens use the 170px layout; taller screens (1440p,
-  // 4K, etc.) get the 340px layout.
-  const query = "(min-height: 1200px)";
+  // 1080p-wide (1920px) and narrower screens use the 170px layout; wider
+  // screens (1440p = 2560, 4K = 3840, etc.) get the 340px layout.
+  const query = "(min-width: 1921px)";
   const [wide, setWide] = useState(
     () => typeof window !== "undefined" && window.matchMedia(query).matches,
   );
@@ -94,8 +94,8 @@ export default function MainScreen() {
   const qrSize = wide ? 248 : 124;
 
   return (
-    <div className="flex flex-col items-center p-4 gap-2 [@media(min-height:1200px)]:p-8 [@media(min-height:1200px)]:gap-4">
-      <div className="relative flex items-center h-[170px] gap-4 w-full rounded-3xl px-4 py-3 bg-black/40 backdrop-blur-2xl border border-white/20 overflow-hidden [@media(min-height:1200px)]:h-[340px] [@media(min-height:1200px)]:gap-8 [@media(min-height:1200px)]:px-8 [@media(min-height:1200px)]:py-6 [@media(min-height:1200px)]:rounded-[44px]">
+    <div className="flex flex-col items-center p-4 gap-2 min-[1921px]:p-8 min-[1921px]:gap-4">
+      <div className="relative flex items-center h-[170px] gap-4 w-full rounded-3xl px-4 py-3 bg-black/40 backdrop-blur-2xl border border-white/20 overflow-hidden min-[1921px]:h-[340px] min-[1921px]:gap-8 min-[1921px]:px-8 min-[1921px]:py-6 min-[1921px]:rounded-[44px]">
         {isIntro ? (
           <>
             {/* QR — left */}
@@ -105,7 +105,7 @@ export default function MainScreen() {
 
             {/* Headline — center */}
             <div className="relative z-10 flex-1 flex items-center justify-center px-2">
-              <span className="text-center font-black text-ink leading-[1.1] text-[2.2rem] [@media(min-height:1200px)]:text-[4.4rem] [text-shadow:0_2px_4px_rgba(0,0,0,0.55)]">
+              <span className="text-center font-black text-ink leading-[1.1] text-[2.2rem] min-[1921px]:text-[4.4rem] [text-shadow:0_2px_4px_rgba(0,0,0,0.55)]">
                 Scan QR Code &amp; Support Your Team
               </span>
             </div>
@@ -117,17 +117,17 @@ export default function MainScreen() {
                   src={logoUrl}
                   onError={() => setLogoOk(false)}
                   alt="FIFA World Cup 2026"
-                  className="max-h-[140px] max-w-[160px] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)] [@media(min-height:1200px)]:max-h-[280px] [@media(min-height:1200px)]:max-w-[330px]"
+                  className="max-h-[140px] max-w-[160px] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)] min-[1921px]:max-h-[280px] min-[1921px]:max-w-[330px]"
                 />
               ) : (
                 <div className="flex flex-col items-center text-center leading-none">
-                  <span className="text-[10px] tracking-[0.4em] text-muted [@media(min-height:1200px)]:text-[20px]">
+                  <span className="text-[10px] tracking-[0.4em] text-muted min-[1921px]:text-[20px]">
                     FIFA
                   </span>
-                  <span className="text-xl font-black tracking-tight text-ink [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] [@media(min-height:1200px)]:text-4xl">
+                  <span className="text-xl font-black tracking-tight text-ink [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] min-[1921px]:text-4xl">
                     WORLD CUP
                   </span>
-                  <span className="text-[1.6rem] font-black text-accent [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] [@media(min-height:1200px)]:text-[3.2rem]">
+                  <span className="text-[1.6rem] font-black text-accent [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] min-[1921px]:text-[3.2rem]">
                     2026
                   </span>
                 </div>
@@ -140,8 +140,8 @@ export default function MainScreen() {
               <VoteQRCode matchId={match.id} size={qrSize} compact />
             </div>
 
-            <div className="relative z-10 flex-1 min-w-0 flex flex-col gap-1.5 [@media(min-height:1200px)]:gap-3">
-              <div className="flex items-baseline gap-2.5 text-[11px] [@media(min-height:1200px)]:text-[22px] [@media(min-height:1200px)]:gap-5">
+            <div className="relative z-10 flex-1 min-w-0 flex flex-col gap-1.5 min-[1921px]:gap-3">
+              <div className="flex items-baseline gap-2.5 text-[11px] min-[1921px]:text-[22px] min-[1921px]:gap-5">
                 <span className="font-bold tracking-wide text-ink">
                   {TOURNAMENT.name}
                 </span>
@@ -163,7 +163,7 @@ export default function MainScreen() {
                 </span>
               </div>
 
-              <div className="flex flex-col gap-1.5 [@media(min-height:1200px)]:gap-3">
+              <div className="flex flex-col gap-1.5 min-[1921px]:gap-3">
                 {match.teams.map((team, i) => {
                   const count = votes[team.code] || 0;
                   const pct = total ? (count / total) * 100 : 0;
@@ -176,40 +176,40 @@ export default function MainScreen() {
                   return (
                     <div
                       key={team.code || i}
-                      className="grid grid-cols-[88px_1fr] items-center gap-3 [@media(min-height:1200px)]:grid-cols-[176px_1fr] [@media(min-height:1200px)]:gap-6"
+                      className="grid grid-cols-[88px_1fr] items-center gap-3 min-[1921px]:grid-cols-[176px_1fr] min-[1921px]:gap-6"
                     >
-                      <div className="relative w-[88px] h-[52px] [@media(min-height:1200px)]:w-[176px] [@media(min-height:1200px)]:h-[104px]">
+                      <div className="relative w-[88px] h-[52px] min-[1921px]:w-[176px] min-[1921px]:h-[104px]">
                         {team.flag ? (
                           <img
-                            className="w-[88px] h-[52px] object-cover rounded ring-1 ring-white/15 [@media(min-height:1200px)]:w-[176px] [@media(min-height:1200px)]:h-[104px] [@media(min-height:1200px)]:rounded-lg"
+                            className="w-[88px] h-[52px] object-cover rounded ring-1 ring-white/15 min-[1921px]:w-[176px] min-[1921px]:h-[104px] min-[1921px]:rounded-lg"
                             src={team.flag}
                             alt={`${team.name} flag`}
                           />
                         ) : (
-                          <span className="w-[88px] h-[52px] rounded bg-track text-muted font-extrabold flex items-center justify-center [@media(min-height:1200px)]:w-[176px] [@media(min-height:1200px)]:h-[104px]">
+                          <span className="w-[88px] h-[52px] rounded bg-track text-muted font-extrabold flex items-center justify-center min-[1921px]:w-[176px] min-[1921px]:h-[104px]">
                             ?
                           </span>
                         )}
                         {goals != null && (
-                          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-md bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-xs flex items-center justify-center tabular-nums [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] [@media(min-height:1200px)]:-top-3 [@media(min-height:1200px)]:-right-3 [@media(min-height:1200px)]:min-w-[40px] [@media(min-height:1200px)]:h-10 [@media(min-height:1200px)]:px-2 [@media(min-height:1200px)]:text-2xl [@media(min-height:1200px)]:rounded-lg">
+                          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-md bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-xs flex items-center justify-center tabular-nums [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] min-[1921px]:-top-3 min-[1921px]:-right-3 min-[1921px]:min-w-[40px] min-[1921px]:h-10 min-[1921px]:px-2 min-[1921px]:text-2xl min-[1921px]:rounded-lg">
                             {goals}
                           </span>
                         )}
                       </div>
-                      <div className="flex flex-col gap-1 min-w-0 [@media(min-height:1200px)]:gap-2">
-                        <div className="flex items-baseline gap-2 min-w-0 [@media(min-height:1200px)]:gap-4">
-                          <span className="font-bold text-[0.95rem] leading-tight text-ink truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.4)] [@media(min-height:1200px)]:text-[1.9rem]">
+                      <div className="flex flex-col gap-1 min-w-0 min-[1921px]:gap-2">
+                        <div className="flex items-baseline gap-2 min-w-0 min-[1921px]:gap-4">
+                          <span className="font-bold text-[0.95rem] leading-tight text-ink truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.4)] min-[1921px]:text-[1.9rem]">
                             {team.name}
                           </span>
                           <span
-                            className={`ml-auto font-extrabold tabular-nums text-[0.95rem] [@media(min-height:1200px)]:text-[1.9rem] ${
+                            className={`ml-auto font-extrabold tabular-nums text-[0.95rem] min-[1921px]:text-[1.9rem] ${
                               isLeader ? "text-green-400" : "text-ink"
                             }`}
                           >
                             {pct.toFixed(0)}%
                           </span>
                         </div>
-                        <div className="h-7 rounded-full overflow-hidden bg-black/20 border border-white/15 [box-shadow:inset_0_1px_3px_rgba(0,0,0,0.35)] [@media(min-height:1200px)]:h-14">
+                        <div className="h-7 rounded-full overflow-hidden bg-black/20 border border-white/15 [box-shadow:inset_0_1px_3px_rgba(0,0,0,0.35)] min-[1921px]:h-14">
                           <div
                             className="h-full rounded-full transition-[width] duration-700 ease-out [box-shadow:inset_0_1px_1px_rgba(255,255,255,0.55),inset_0_-2px_3px_rgba(0,0,0,0.2)]"
                             style={{
@@ -231,13 +231,13 @@ export default function MainScreen() {
 
       {slideCount > 1 && (
         <div
-          className="flex gap-[7px] items-center [@media(min-height:1200px)]:gap-3"
+          className="flex gap-[7px] items-center min-[1921px]:gap-3"
           aria-label={`Slide ${index + 1} of ${slideCount}`}
         >
           {Array.from({ length: slideCount }).map((_, i) => (
             <span
               key={i}
-              className={`w-[7px] h-[7px] rounded-full transition-all [@media(min-height:1200px)]:w-[14px] [@media(min-height:1200px)]:h-[14px] ${
+              className={`w-[7px] h-[7px] rounded-full transition-all min-[1921px]:w-[14px] min-[1921px]:h-[14px] ${
                 i === index ? "bg-accent scale-125" : "bg-line"
               }`}
             />
