@@ -57,7 +57,7 @@ export default function Carousel({ images, intervalMs = 3500 }) {
 
   return (
     <div
-      className="relative mt-6 flex items-center justify-center h-72 w-full overflow-hidden select-none cursor-pointer"
+      className="relative my-6 flex items-center justify-center h-72 w-full overflow-hidden select-none cursor-pointer"
       onClick={onClick}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}

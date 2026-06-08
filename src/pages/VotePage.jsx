@@ -130,7 +130,7 @@ export default function VotePage() {
   );
 
   return (
-    <div className="bg-[#E5E7EB] min-h-screen w-full text-gray-900">
+    <div className="bg-[#FBF7EE] min-h-screen w-full text-gray-900">
       <div className="max-w-[640px] mx-auto px-4 py-3 min-h-screen flex flex-col gap-2">
         {/* Header: title left, World Cup logo right */}
         <header className="flex items-center justify-between gap-3 border-b border-gray-200 pb-1">
@@ -143,7 +143,7 @@ export default function VotePage() {
             </span>
           </div>
           <img
-            src={logo("fifa_2026.png")}
+            src={logo("fifa2026_black.webp")}
             alt="FIFA World Cup 2026"
             className="h-16 overflow-hidden object-contain"
           />
@@ -180,7 +180,7 @@ export default function VotePage() {
               <button
                 onClick={() => picks.length && setConfirmOpen(true)}
                 disabled={picks.length === 0}
-                className="w-[200px] justify-center group inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-b from-green-500 to-green-600 px-7 py-3 font-bold text-white shadow-lg shadow-green-500/30 ring-1 ring-inset ring-white/15 transition-all duration-200 hover:from-green-400 hover:to-green-500 hover:shadow-xl hover:shadow-green-500/40 active:scale-[0.97] disabled:cursor-default disabled:from-gray-200 disabled:to-gray-200 disabled:text-gray-400 disabled:shadow-none disabled:ring-gray-200"
+                className="w-[200px] justify-center group inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-b from-[#C2683E] to-[#A8522E] px-7 py-3 font-bold text-white shadow-lg shadow-[#C2683E]/35 ring-1 ring-inset ring-white/20 transition-all duration-200 hover:from-[#CE744A] hover:to-[#B85B34] hover:shadow-xl hover:shadow-[#C2683E]/45 active:scale-[0.97] disabled:cursor-default disabled:from-[#E0C9B2] disabled:to-[#E0C9B2] disabled:text-[#8C7D6F] disabled:shadow-none disabled:ring-[#EAD7C4]"
               >
                 {/* <svg
                   viewBox="0 0 24 24"
@@ -200,8 +200,8 @@ export default function VotePage() {
                   </span>
                 )}
               </button>
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-[11px] tracking-widest text-gray-400">
+              <div className="flex flex-col items-center mt-1 -gap-2">
+                <span className="text-[12px] tracking-widest text-gray-400 -mb-2 ml-6">
                   Powered by
                 </span>
                 <img
@@ -213,12 +213,14 @@ export default function VotePage() {
             </div>
 
             {/* Carousel */}
-            <Carousel images={CAROUSEL_IMAGES} />
+            <div className="rounded-2xl bg-[#ffe9dc] p-2 mt-5">
+              <Carousel images={CAROUSEL_IMAGES} />
+            </div>
           </>
         )}
 
         {/* Client marquee at the bottom */}
-        <div className="mt-4">
+        <div className="mt-auto rounded-2xl bg-white border border-[#EAD7C4] p-3">
           <ClientSlider />
         </div>
       </div>
@@ -226,29 +228,29 @@ export default function VotePage() {
       {/* Confirm-all modal */}
       {confirmOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A1715]/50 p-4"
           onClick={() => !submitting && setConfirmOpen(false)}
         >
           <div
-            className="bg-panel border border-line rounded-2xl p-5 w-full max-w-sm"
+            className="bg-[#F9E9DE] border border-[#EAD7C4] rounded-2xl p-5 w-full max-w-sm shadow-2xl shadow-[#1A1715]/20"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-ink text-lg font-bold text-center">
+            <h2 className="text-[#1A1715] text-lg font-bold text-center">
               Confirm your votes
             </h2>
-            <p className="text-muted text-sm text-center mt-1">
+            <p className="text-[#8C7D6F] text-sm text-center mt-1">
               You're voting for:
             </p>
             <ul className="my-4 max-h-56 overflow-auto flex flex-col gap-2">
               {pickList.map((p) => (
                 <li
                   key={p.matchId}
-                  className="flex items-center justify-between gap-3 bg-track border border-line rounded-lg px-3 py-2"
+                  className="flex items-center justify-between gap-3 bg-[#F9E6D7] border border-[#E0C9B2] rounded-lg px-3 py-2"
                 >
-                  <span className="text-[0.7rem] text-muted truncate">
+                  <span className="text-[0.7rem] text-[#8C7D6F] truncate">
                     {p.label}
                   </span>
-                  <span className="font-bold text-ink text-sm shrink-0">
+                  <span className="font-bold text-[#1A1715] text-sm shrink-0">
                     {p.team}
                   </span>
                 </li>
@@ -258,14 +260,14 @@ export default function VotePage() {
               <button
                 onClick={() => setConfirmOpen(false)}
                 disabled={submitting}
-                className="flex-1 rounded-xl border border-line text-muted py-2.5 hover:border-accent transition"
+                className="flex-1 rounded-xl border border-[#D9BFA6] text-[#8C7D6F] py-2.5 hover:border-[#C2683E] hover:text-[#1A1715] transition"
               >
                 Cancel
               </button>
               <button
                 onClick={submit}
                 disabled={submitting}
-                className="flex-1 rounded-xl bg-accent text-white font-bold py-2.5 hover:brightness-110 transition disabled:opacity-60"
+                className="flex-1 rounded-xl bg-[#C2683E] text-white font-bold py-2.5 hover:brightness-110 transition disabled:opacity-60"
               >
                 {submitting ? "Submitting…" : "Confirm"}
               </button>
