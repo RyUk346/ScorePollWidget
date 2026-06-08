@@ -29,6 +29,17 @@ export default function Carousel({ images, intervalMs = 3500 }) {
     return () => clearTimeout(id);
   }, [i, paused, images.length, intervalMs]);
 
+  // Quietly warm the neighbouring images in the cache so a swipe/tap shows
+  // instantly. (Runs before any early return to keep hook order stable.)
+  useEffect(() => {
+    const len = images.length;
+    if (len < 2) return;
+    [(i + 1) % len, (i + 2) % len, (i - 1 + len) % len].forEach((k) => {
+      const img = new Image();
+      img.src = images[k];
+    });
+  }, [i, images]);
+
   if (!images.length) return null;
   const n = images.length;
   const prev = images[(i - 1 + n) % n];
@@ -68,12 +79,16 @@ export default function Carousel({ images, intervalMs = 3500 }) {
         key={`p${i}`}
         src={prev}
         alt=""
-        className="h-40 w-auto max-w-[26%] object-contain rounded-lg opacity-40"
+        loading="lazy"
+        decoding="async"
+        className="animate-carousel-fade h-40 w-auto max-w-[26%] object-contain rounded-lg opacity-40"
       />
       <img
         key={`c${i}`}
         src={cur}
         alt=""
+        decoding="async"
+        fetchpriority="high"
         className={`relative z-10 h-72 w-auto max-w-[56%] object-contain rounded-xl shadow-2xl -mx-8 ${
           dir >= 0 ? "animate-slide-right" : "animate-slide-left"
         }`}
@@ -82,7 +97,9 @@ export default function Carousel({ images, intervalMs = 3500 }) {
         key={`n${i}`}
         src={next}
         alt=""
-        className="h-40 w-auto max-w-[26%] object-contain rounded-lg opacity-40"
+        loading="lazy"
+        decoding="async"
+        className="animate-carousel-fade h-40 w-auto max-w-[26%] object-contain rounded-lg opacity-40"
       />
     </div>
   );

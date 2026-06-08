@@ -11,7 +11,8 @@
     "poll": "node server/poll-worldcup.mjs",
     "live": "node server/check-live.mjs",
     "comps": "node server/list-competitions.mjs",
-    "reset-votes": "node server/reset-votes.mjs"
+    "reset-votes": "node server/reset-votes.mjs",
+    "optimize:images": "node scripts/optimize-carousel.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -25,6 +26,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
+    "sharp": "^0.33.4",
     "tailwindcss": "^3.4.4",
     "vite": "^5.2.11"
   }

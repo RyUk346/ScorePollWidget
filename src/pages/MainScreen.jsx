@@ -36,7 +36,6 @@ export default function MainScreen({ big = false }) {
     const id = setInterval(() => setTick((t) => t + 1), REFRESH_MS);
     return () => clearInterval(id);
   }, []);
-  const [logoOk, setLogoOk] = useState(true);
   const fixtures = useMemo(
     () => getUpcomingDaysFixtures(all, new Date(), 2),
     [all, tick],
@@ -99,26 +98,11 @@ export default function MainScreen({ big = false }) {
 
             {/* FIFA 2026 logo — right (drop your image at public/fifa_2026.png) */}
             <div className="shrink-0 relative flex items-center justify-center h-full pr-1">
-              {logoOk ? (
-                <img
-                  src={logoUrl}
-                  onError={() => setLogoOk(false)}
-                  alt="FIFA World Cup 2026"
-                  className="max-h-[140px] max-w-[160px] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)] [.big_&]:max-h-[280px] [.big_&]:max-w-[330px]"
-                />
-              ) : (
-                <div className="flex flex-col items-center text-center leading-none">
-                  <span className="text-[10px] tracking-[0.4em] text-muted [.big_&]:text-[20px]">
-                    FIFA
-                  </span>
-                  <span className="text-xl font-black tracking-tight text-ink [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] [.big_&]:text-4xl">
-                    WORLD CUP
-                  </span>
-                  <span className="text-[1.6rem] font-black text-accent [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] [.big_&]:text-[3.2rem]">
-                    2026
-                  </span>
-                </div>
-              )}
+              <img
+                src={logoUrl}
+                alt="FIFA World Cup 2026"
+                className="max-h-[140px] max-w-[160px] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)] [.big_&]:max-h-[280px] [.big_&]:max-w-[330px]"
+              />
             </div>
           </>
         ) : match ? (

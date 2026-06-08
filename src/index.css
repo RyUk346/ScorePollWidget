@@ -37,30 +37,45 @@ body {
   will-change: transform;
 }
 
-/* Carousel centre-image directional slide-in. */
+/* Carousel centre-image directional slide-in. A soft ease-out curve plus a
+   slight scale makes the transition feel smooth rather than abrupt. */
 @keyframes slideFromRight {
   from {
     opacity: 0;
-    transform: translateX(60px);
+    transform: translateX(44px) scale(0.94);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 @keyframes slideFromLeft {
   from {
     opacity: 0;
-    transform: translateX(-60px);
+    transform: translateX(-44px) scale(0.94);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
+  }
+}
+/* Gentle fade for the dimmed side images as they swap in. */
+@keyframes carouselFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.4;
   }
 }
 .animate-slide-right {
-  animation: slideFromRight 0.5s ease;
+  animation: slideFromRight 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
 }
 .animate-slide-left {
-  animation: slideFromLeft 0.5s ease;
+  animation: slideFromLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+.animate-carousel-fade {
+  animation: carouselFade 0.6s ease;
 }

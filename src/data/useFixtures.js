@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { subscribeFixtures, firebaseConfigured } from "../firebase.js";
-import { FIXTURES as STATIC_FIXTURES, teamColor } from "./match.js";
+import { teamColor } from "./match.js";
 
 // Live teams come from the poller as { code, name, flag }. Add the accent
-// colour the UI needs so live and static fixtures share one shape.
+// colour the UI needs.
 function normalize(list) {
   return list.map((m) => ({
     ...m,
@@ -19,19 +19,15 @@ function normalize(list) {
 /**
  * Returns `{ fixtures, loading }`.
  *
- * SINGLE SOURCE OF TRUTH: once the live poller's fixtures have been read from
- * Firebase, they are used for the rest of the session and are NEVER replaced by
- * the static fallback — not even if a later snapshot comes back empty. This is
- * what stops the UI oscillating between the live schedule (real kickoff dates)
- * and the built-in static schedule (approximate dates), which made the same
- * match appear on different days between refreshes.
+ * LIVE DATA ONLY. The fixtures always come from the football-data poller via
+ * Firebase (`worldcup/fixtures`). There is intentionally no static fallback —
+ * mixing a built-in approximate schedule with the live one made the same match
+ * appear on different days. Until the first live snapshot arrives, `fixtures`
+ * is an empty array and `loading` is true so the UI shows its loader/empty
+ * state instead of a second dataset.
  *
- *  - `loading` stays true until the first Firebase snapshot arrives, so neither
- *    dataset flashes mid-load. It's false immediately when Firebase isn't
- *    configured.
- *  - `fixtures` is the live list once it has ever arrived; otherwise the static
- *    fallback — used only when Firebase isn't configured, or the poller has
- *    never written any data.
+ *  - `live` is only ever set to a non-empty list and is never cleared, so a
+ *    transient empty/missing snapshot won't blank the UI.
  */
 export function useFixtures() {
   const [live, setLive] = useState(null);
@@ -39,8 +35,6 @@ export function useFixtures() {
 
   useEffect(() => {
     return subscribeFixtures((data) => {
-      // Only ever adopt a non-empty live list, and never clear it once set.
-      // A transient empty/missing snapshot must not knock us back to static.
       if (Array.isArray(data) && data.length) {
         setLive(normalize(data));
       }
@@ -48,6 +42,5 @@ export function useFixtures() {
     });
   }, []);
 
-  const fixtures = live ?? STATIC_FIXTURES;
-  return { fixtures, loading };
+  return { fixtures: live ?? [], loading };
 }
