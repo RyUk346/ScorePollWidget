@@ -7,6 +7,7 @@ import {
 import { useFixtures } from "../data/useFixtures.js";
 import { subscribeVotes, firebaseConfigured } from "../firebase.js";
 import VoteQRCode from "../components/VoteQRCode.jsx";
+import Loader from "../components/Loader.jsx";
 
 const ROTATE_MS = 15000; // how long each match is shown before rotating
 const REFRESH_MS = 30000; // how often we recompute the day's match set
@@ -25,7 +26,7 @@ const hasScore = (m) =>
 // Size is fixed by route, not by screen: /2k -> 170px layout, /4k -> 340px.
 // The `big` prop adds a `.big` marker class so the [.big_&]: variants apply.
 export default function MainScreen({ big = false }) {
-  const all = useFixtures();
+  const { fixtures: all, loading } = useFixtures();
   const [tick, setTick] = useState(0);
   const [index, setIndex] = useState(0);
   const [votes, setVotes] = useState({});
@@ -50,12 +51,10 @@ export default function MainScreen({ big = false }) {
 
   useEffect(() => {
     if (slideCount <= 1) return;
-    const id = setInterval(
-      () => setIndex((i) => (i + 1) % slideCount),
-      ROTATE_MS,
-    );
-    return () => clearInterval(id);
-  }, [slideCount]);
+    const ms = index === 0 ? 3000 : 10000; // intro 3s, match slides 10s
+    const id = setTimeout(() => setIndex((i) => (i + 1) % slideCount), ms);
+    return () => clearTimeout(id);
+  }, [index, slideCount]);
 
   const isIntro = index === 0;
   const match = isIntro ? null : fixtures[index - 1] || null;
@@ -80,7 +79,11 @@ export default function MainScreen({ big = false }) {
     <div className={big ? "big" : ""}>
       <div className="flex flex-col items-center p-4 gap-2 [.big_&]:p-8 [.big_&]:gap-4">
       <div className="relative flex items-center h-[170px] gap-4 w-full rounded-3xl px-4 py-3 bg-black/40 backdrop-blur-2xl border border-white/20 overflow-hidden [.big_&]:h-[340px] [.big_&]:gap-8 [.big_&]:px-8 [.big_&]:py-6 [.big_&]:rounded-[44px]">
-        {isIntro ? (
+        {loading ? (
+          <div className="flex-1 flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : isIntro ? (
           <>
             {/* QR — left */}
             <div className="shrink-0 relative">
@@ -118,7 +121,7 @@ export default function MainScreen({ big = false }) {
               )}
             </div>
           </>
-        ) : (
+        ) : match ? (
           <>
             <div className="shrink-0 relative">
               <VoteQRCode matchId={match.id} size={qrSize} compact />
@@ -140,10 +143,6 @@ export default function MainScreen({ big = false }) {
                   }`}
                 >
                   {statusLine(match)}
-                  {/* vote count hidden for now
-                  {" · "}
-                  {total.toLocaleString()} {total === 1 ? "vote" : "votes"}
-                  */}
                 </span>
               </div>
 
@@ -210,10 +209,10 @@ export default function MainScreen({ big = false }) {
               </div>
             </div>
           </>
-        )}
+        ) : null}
       </div>
 
-      {slideCount > 1 && (
+      {!loading && slideCount > 1 && (
         <div
           className="flex gap-[7px] items-center [.big_&]:gap-3"
           aria-label={`Slide ${index + 1} of ${slideCount}`}
