@@ -24,7 +24,7 @@ export default function VoteQRCode({ matchId, size = 180, compact = false }) {
   // the code scannable on a large screen / from a distance. Pure black on
   // white gives the best contrast.
   const code = (
-    <div className="bg-white rounded-lg leading-none" style={{ padding: 12 }}>
+    <div className="bg-white rounded-lg leading-none" style={{ padding: 8 }}>
       <QRCodeCanvas
         value={voteUrl}
         size={size}
