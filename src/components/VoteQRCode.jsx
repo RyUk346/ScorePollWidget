@@ -20,14 +20,18 @@ export default function VoteQRCode({ matchId, size = 180, compact = false }) {
     ? `${base}/vote?m=${encodeURIComponent(matchId)}`
     : `${base}/vote`;
 
+  // A generous white quiet zone + low error-correction (bigger modules) make
+  // the code scannable on a large screen / from a distance. Pure black on
+  // white gives the best contrast.
   const code = (
-    <div className="bg-white rounded-lg p-1.5 leading-none">
+    <div className="bg-white rounded-lg leading-none" style={{ padding: 12 }}>
       <QRCodeCanvas
         value={voteUrl}
         size={size}
-        level="M"
+        level="L"
+        marginSize={0}
         bgColor="#ffffff"
-        fgColor="#0b1020"
+        fgColor="#000000"
       />
     </div>
   );

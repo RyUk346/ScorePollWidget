@@ -108,7 +108,9 @@ export default function MainScreen({ big = false }) {
         ) : match ? (
           <>
             <div className="shrink-0 relative">
-              <VoteQRCode matchId={match.id} size={qrSize} compact />
+              {/* Constant QR (generic vote page) on every slide, so the code
+                  never changes and a camera can stay locked on it. */}
+              <VoteQRCode size={qrSize} compact />
             </div>
 
             <div className="relative z-10 flex-1 min-w-0 flex flex-col gap-1.5 [.big_&]:gap-3">

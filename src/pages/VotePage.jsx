@@ -130,7 +130,7 @@ export default function VotePage() {
   );
 
   return (
-    <div className="bg-[#FBF7EE] min-h-screen w-full text-gray-900">
+    <div className="bg-[#FBF7EE] min-h-screen w-full overflow-x-hidden text-gray-900">
       <div className="max-w-[640px] mx-auto px-4 py-3 min-h-screen flex flex-col gap-2">
         {/* Header: title left, World Cup logo right */}
         <header className="flex items-center justify-between gap-3 border-b border-gray-200 pb-1">
@@ -200,27 +200,34 @@ export default function VotePage() {
                   </span>
                 )}
               </button>
-              <div className="flex flex-col items-center mt-1 -gap-2">
-                <span className="text-[12px] tracking-widest text-gray-400 -mb-2 ml-6">
-                  Powered by
-                </span>
-                <img
-                  src={logo("hyperglow-logo.webp")}
-                  alt="HyperGlow"
-                  className="h-9 object-contain"
-                />
-              </div>
+              <a
+                href="https://hyperglow.co.uk/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="flex flex-col items-center mt-1 -gap-2">
+                  <span className="text-[12px] tracking-widest font-semibold text-[#5D5F5C] -mb-2 ml-6">
+                    Powered by
+                  </span>
+                  <img
+                    src={logo("hyperglow-logo.webp")}
+                    alt="HyperGlow"
+                    className="h-9 object-contain"
+                  />
+                </div>
+              </a>
             </div>
 
             {/* Carousel */}
             <div className="rounded-2xl bg-[#ffe9dc] p-2 mt-5">
-              <Carousel images={CAROUSEL_IMAGES} />
+              <Carousel images={CAROUSEL_IMAGES} intervalMs={2000} />
             </div>
           </>
         )}
 
-        {/* Client marquee at the bottom */}
-        <div className="mt-auto rounded-2xl bg-white border border-[#EAD7C4] p-3">
+        {/* Client marquee — full bleed to the screen edges (breaks out of the
+            centred max-w container via the w-screen + left-1/2 trick). */}
+        <div className="mt-auto w-screen relative left-1/2 -translate-x-1/2 bg-white border-t border-[#EAD7C4]">
           <ClientSlider />
         </div>
       </div>
