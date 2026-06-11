@@ -8,6 +8,12 @@ body,
   margin: 0;
 }
 
+/* Opt out of the browser/OS "force dark" auto-recolouring so the light vote
+   page keeps its intended colours on Android devices set to dark theme. */
+:root {
+  color-scheme: only light;
+}
+
 body {
   /* No global background — the main screen is transparent so a background
      image/stream can show through. The vote page sets its own background. */
