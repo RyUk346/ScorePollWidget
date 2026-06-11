@@ -15,7 +15,7 @@ const FILES = [
   "PAK FOODS logo.png",
   "Radio FM logo.png",
   "Stoneycroft Pharmacy logo.png",
-  "The Pantry logo.png",
+  "post_office.png",
   "UMRAH SUPERMARKET logo.png",
   "US-2605-3P-12S-EID MUBARAK-HR WD-V1.png",
   "WhatsApp Image 2026-06-06 at 2.15.21 PM.png",
