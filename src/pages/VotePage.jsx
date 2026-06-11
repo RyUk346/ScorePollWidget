@@ -154,7 +154,7 @@ export default function VotePage() {
             <Loader />
           </div>
         ) : submitted ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-center py-16 gap-3">
+          <div className="flex flex-col items-center justify-center text-center py-10 gap-3">
             <div className="w-16 h-16 rounded-full bg-green-100 border border-green-500 flex items-center justify-center text-green-600 text-3xl">
               ✓
             </div>
@@ -217,13 +217,14 @@ export default function VotePage() {
                 </div>
               </a>
             </div>
-
-            {/* Carousel */}
-            <div className="rounded-2xl bg-[#ffe9dc] p-2 mt-5">
-              <Carousel images={CAROUSEL_IMAGES} intervalMs={2000} />
-            </div>
           </>
         )}
+
+        {/* Carousel — always on, exactly like the client marquee: shown in
+            every state including loading, no-match, voting and after submit. */}
+        <div className="rounded-2xl bg-[#ffe9dc] p-2 mt-5">
+          <Carousel images={CAROUSEL_IMAGES} intervalMs={2000} />
+        </div>
 
         {/* Client marquee — full bleed to the screen edges (breaks out of the
             centred max-w container via the w-screen + left-1/2 trick). */}

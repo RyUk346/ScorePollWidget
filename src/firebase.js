@@ -56,6 +56,24 @@ export function castVote(matchId, teamCode) {
 }
 
 /**
+ * Subscribe to EVERY match's vote tallies at once (for the results page).
+ * Calls back with a flattened map: { [matchId]: { [teamCode]: count } }.
+ * Returns an unsubscribe function.
+ */
+export function subscribeAllVotes(callback) {
+  if (!firebaseConfigured) return localStore.subscribeAll(callback);
+
+  return onValue(ref(db, "polls"), (snapshot) => {
+    const raw = snapshot.val() || {};
+    const out = {};
+    for (const [matchId, node] of Object.entries(raw)) {
+      out[matchId] = (node && node.votes) || {};
+    }
+    callback(out);
+  });
+}
+
+/**
  * Subscribe to the live fixture list written by the football-data poller
  * (`npm run poll`) at `worldcup/fixtures`. Calls back with an array, or null
  * when Firebase isn't configured / no data yet — callers fall back to the
@@ -109,6 +127,30 @@ const localStore = {
     const onMsg = (e) => {
       if (e.data === matchId) emit();
     };
+    channel?.addEventListener("message", onMsg);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      channel?.removeEventListener("message", onMsg);
+    };
+  },
+  readAll() {
+    const out = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith("wc-poll:")) {
+        out[key.slice("wc-poll:".length)] = this.read(key.slice("wc-poll:".length));
+      }
+    }
+    return out;
+  },
+  subscribeAll(callback) {
+    const emit = () => callback(this.readAll());
+    emit();
+    const onStorage = (e) => {
+      if (e.key && e.key.startsWith("wc-poll:")) emit();
+    };
+    window.addEventListener("storage", onStorage);
+    const onMsg = () => emit();
     channel?.addEventListener("message", onMsg);
     return () => {
       window.removeEventListener("storage", onStorage);
