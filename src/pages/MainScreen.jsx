@@ -23,6 +23,12 @@ const hasScore = (m) =>
   m.score &&
   (m.status === "IN_PLAY" || m.status === "PAUSED" || m.status === "FINISHED");
 
+// Last-known votes per match, kept for the whole session. Firebase drops a
+// path from its cache once its listener is removed (i.e. when we rotate away
+// from a match), so without this the votes would reset to 0% when a slide
+// comes back around while offline. This keeps each match's last numbers.
+const VOTE_CACHE = {};
+
 // Size is fixed by route, not by screen: /2k -> 170px layout, /4k -> 340px.
 // The `big` prop adds a `.big` marker class so the [.big_&]: variants apply.
 export default function MainScreen({ big = false }) {
@@ -59,9 +65,20 @@ export default function MainScreen({ big = false }) {
   const match = isIntro ? null : fixtures[index - 1] || null;
 
   useEffect(() => {
-    setVotes({});
-    if (!match) return;
-    return subscribeVotes(match.id, setVotes);
+    if (!match) {
+      setVotes({});
+      return;
+    }
+    // Show this match's last-known votes immediately, then keep them updated.
+    setVotes(VOTE_CACHE[match.id] || {});
+    return subscribeVotes(match.id, (v) => {
+      // Only adopt real data — an empty snapshot offline (purged cache) must
+      // not wipe the last-known numbers back to 0%.
+      if (v && Object.keys(v).length) {
+        VOTE_CACHE[match.id] = v;
+        setVotes(v);
+      }
+    });
   }, [match?.id]);
 
   const total = match
