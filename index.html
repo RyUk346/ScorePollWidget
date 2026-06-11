@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#0b1020" />
-    <!-- Declare a fixed light scheme so Android/Chrome "force dark" doesn't
-         auto-recolour the (light) vote page on devices in dark theme. -->
-    <meta name="color-scheme" content="only light" />
+    <!-- Declare support for both schemes. Together with the prefers-color-scheme
+         dark rules in index.css, this marks the site as "dark-mode aware" so
+         Samsung Internet / Chrome stop force-inverting our colours. -->
+    <meta name="color-scheme" content="light dark" />
     <title>World Cup Match Poll</title>
   </head>
   <body>

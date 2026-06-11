@@ -8,10 +8,113 @@ body,
   margin: 0;
 }
 
-/* Opt out of the browser/OS "force dark" auto-recolouring so the light vote
-   page keeps its intended colours on Android devices set to dark theme. */
+/* Declare support for both schemes so the site counts as "dark-mode aware".
+   Browsers that auto-darken (Samsung Internet, Chrome force-dark) only do so
+   for pages that DON'T provide their own dark theme — so the prefers-color-
+   scheme:dark rules below stop them inverting our colours. */
 :root {
-  color-scheme: only light;
+  color-scheme: light dark;
+}
+
+/* The vote page must look IDENTICAL in dark mode. Aggressive auto-darkeners
+   (Samsung Internet, Chrome force-dark) only stop inverting once EVERY surface
+   has a declared dark-scheme colour — a single root rule isn't enough, the
+   un-styled children still get darkened. So we re-state every colour the vote
+   page uses, at its exact light value, under prefers-color-scheme:dark. */
+@media (prefers-color-scheme: dark) {
+  .vote-page {
+    background-color: #fbf7ee !important;
+    color: #111827 !important;
+  }
+
+  /* backgrounds */
+  .vote-page .bg-white {
+    background-color: #ffffff !important;
+  }
+  .vote-page .bg-\[\#F9E9DE\] {
+    background-color: #f9e9de !important;
+  }
+  .vote-page .bg-\[\#F9E6D7\] {
+    background-color: #f9e6d7 !important;
+  }
+  .vote-page .bg-\[\#EAD7C4\] {
+    background-color: #ead7c4 !important;
+  }
+  .vote-page .bg-\[\#ffe9dc\] {
+    background-color: #ffe9dc !important;
+  }
+  .vote-page .bg-green-100 {
+    background-color: #dcfce7 !important;
+  }
+  .vote-page .bg-\[\#C2683E\] {
+    background-color: #c2683e !important;
+  }
+  .vote-page .bg-\[\#C2683E\]\/12 {
+    background-color: rgb(194 104 62 / 0.12) !important;
+  }
+  .vote-page .bg-white\/25 {
+    background-color: rgb(255 255 255 / 0.25) !important;
+  }
+  .vote-page .bg-\[\#1A1715\]\/50 {
+    background-color: rgb(26 23 21 / 0.5) !important;
+  }
+
+  /* text */
+  .vote-page .text-gray-900 {
+    color: #111827 !important;
+  }
+  .vote-page .text-gray-400 {
+    color: #9ca3af !important;
+  }
+  .vote-page .text-gray-500 {
+    color: #6b7280 !important;
+  }
+  .vote-page .text-\[\#1A1715\] {
+    color: #1a1715 !important;
+  }
+  .vote-page .text-\[\#8C7D6F\] {
+    color: #8c7d6f !important;
+  }
+  .vote-page .text-white {
+    color: #ffffff !important;
+  }
+  .vote-page .text-green-600 {
+    color: #16a34a !important;
+  }
+
+  /* borders + ring */
+  .vote-page .border-gray-200 {
+    border-color: #e5e7eb !important;
+  }
+  .vote-page .border-\[\#EAD7C4\] {
+    border-color: #ead7c4 !important;
+  }
+  .vote-page .border-\[\#E0C9B2\] {
+    border-color: #e0c9b2 !important;
+  }
+  .vote-page .border-\[\#D9BFA6\] {
+    border-color: #d9bfa6 !important;
+  }
+  .vote-page .border-\[\#C2683E\] {
+    border-color: #c2683e !important;
+  }
+  .vote-page .border-green-500 {
+    border-color: #22c55e !important;
+  }
+  .vote-page .ring-\[\#C2683E\]\/30 {
+    --tw-ring-color: rgb(194 104 62 / 0.3) !important;
+  }
+
+  /* the gradient Vote button (tagged with .vp-vote-btn) */
+  .vote-page .vp-vote-btn {
+    background-image: linear-gradient(to bottom, #c2683e, #a8522e) !important;
+  }
+  .vote-page .vp-vote-btn:hover {
+    background-image: linear-gradient(to bottom, #ce744a, #b85b34) !important;
+  }
+  .vote-page .vp-vote-btn:disabled {
+    background-image: linear-gradient(to bottom, #e0c9b2, #e0c9b2) !important;
+  }
 }
 
 body {

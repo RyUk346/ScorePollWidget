@@ -130,7 +130,7 @@ export default function VotePage() {
   );
 
   return (
-    <div className="bg-[#FBF7EE] min-h-screen w-full overflow-x-hidden text-gray-900">
+    <div className="vote-page bg-[#FBF7EE] min-h-screen w-full overflow-x-hidden text-gray-900">
       <div className="max-w-[640px] mx-auto px-4 py-3 min-h-screen flex flex-col gap-2">
         {/* Header: title left, World Cup logo right */}
         <header className="flex items-center justify-between gap-3 border-b border-gray-200 pb-1">
@@ -180,7 +180,7 @@ export default function VotePage() {
               <button
                 onClick={() => picks.length && setConfirmOpen(true)}
                 disabled={picks.length === 0}
-                className="w-[200px] justify-center group inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-b from-[#C2683E] to-[#A8522E] px-7 py-3 font-bold text-white shadow-lg shadow-[#C2683E]/35 ring-1 ring-inset ring-white/20 transition-all duration-200 hover:from-[#CE744A] hover:to-[#B85B34] hover:shadow-xl hover:shadow-[#C2683E]/45 active:scale-[0.97] disabled:cursor-default disabled:from-[#E0C9B2] disabled:to-[#E0C9B2] disabled:text-[#8C7D6F] disabled:shadow-none disabled:ring-[#EAD7C4]"
+                className="vp-vote-btn w-[200px] justify-center group inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-b from-[#C2683E] to-[#A8522E] px-7 py-3 font-bold text-white shadow-lg shadow-[#C2683E]/35 ring-1 ring-inset ring-white/20 transition-all duration-200 hover:from-[#CE744A] hover:to-[#B85B34] hover:shadow-xl hover:shadow-[#C2683E]/45 active:scale-[0.97] disabled:cursor-default disabled:from-[#E0C9B2] disabled:to-[#E0C9B2] disabled:text-[#8C7D6F] disabled:shadow-none disabled:ring-[#EAD7C4]"
               >
                 {/* <svg
                   viewBox="0 0 24 24"
