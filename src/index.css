@@ -8,11 +8,11 @@ body,
   margin: 0;
 }
 
-/* Declare support for both schemes so the site counts as "dark-mode aware".
-   Browsers that auto-darken (Samsung Internet, Chrome force-dark) only do so
-   for pages that DON'T provide their own dark theme — so the prefers-color-
-   scheme:dark rules below stop them inverting our colours. */
-:root {
+/* Scoped to the vote page ONLY (not the widget). Declaring support for both
+   schemes makes the vote page count as "dark-mode aware", so browsers that
+   auto-darken (Samsung Internet, Chrome force-dark) use the rules below instead
+   of inverting it. The widget is left completely untouched. */
+.vote-page {
   color-scheme: light dark;
 }
 
