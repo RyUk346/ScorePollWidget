@@ -128,7 +128,13 @@ body {
      image/stream can show through. The vote page sets its own background. */
   background: transparent;
   color: #eef1fb;
-  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial,
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    Arial,
     sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -136,6 +142,37 @@ body {
 /* Dark backdrop used only on the vote page. */
 .page-bg {
   background: radial-gradient(1200px 600px at 50% -10%, #1a2348, #0b1020);
+}
+
+/* Banner widget loop: drops in from above (slow), holds ~10s, slides back up
+   off-screen (slow), waits ~5s, repeats. Total cycle ≈ 17.8s.
+     drop   1.4s  (0%   -> 8%)
+     hold  10s    (8%   -> 64%)
+     rise   1.4s  (64%  -> 72%)
+     wait   5s    (72%  -> 100%)
+   Per-segment easing: decelerate on the way in, accelerate on the way out. */
+@keyframes bannerLoop {
+  0% {
+    transform: translateY(-140%);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  8% {
+    transform: translateY(0);
+  }
+  64% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0);
+  }
+  72% {
+    transform: translateY(-140%);
+  }
+  100% {
+    transform: translateY(-140%);
+  }
+}
+.animate-banner-loop {
+  animation: bannerLoop 17.8s infinite;
+  will-change: transform;
 }
 
 /* Client logo marquee (logos are duplicated, so -50% loops seamlessly). */

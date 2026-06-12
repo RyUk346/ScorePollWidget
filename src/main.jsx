@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainScreen from "./pages/MainScreen.jsx";
 import VotePage from "./pages/VotePage.jsx";
 import ResultsPage from "./pages/ResultsPage.jsx";
+import BannerWidget from "./pages/BannerWidget.jsx";
 import "./index.css";
 
 // Strip the trailing slash from Vite's BASE_URL ("/hg_score_poll/" -> "/hg_score_poll",
@@ -19,6 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/4k" element={<MainScreen big={true} />} />
         <Route path="/vote" element={<VotePage />} />
         <Route path="/results" element={<ResultsPage />} />
+        <Route path="/banner" element={<BannerWidget big={false} />} />
+        <Route path="/banner/2k" element={<BannerWidget big={false} />} />
+        <Route path="/banner/4k" element={<BannerWidget big={true} />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
