@@ -18,7 +18,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set } from "firebase/database";
 
 const TOKEN = process.env.FOOTBALL_DATA_TOKEN;
-const POLL_MS = Number(process.env.POLL_MS || 20000);
+const POLL_MS = Number(process.env.POLL_MS || 30000);
 // football-data competition code. Default WC (FIFA World Cup). For testing the
 // live score/minute pipeline BEFORE the World Cup starts, set
 // FOOTBALL_DATA_COMPETITION in .env to a competition that's in play now, e.g.
@@ -26,7 +26,9 @@ const POLL_MS = Number(process.env.POLL_MS || 20000);
 const COMPETITION = process.env.FOOTBALL_DATA_COMPETITION || "WC";
 
 if (!TOKEN) {
-  console.error("Missing FOOTBALL_DATA_TOKEN in .env — get a free key at football-data.org");
+  console.error(
+    "Missing FOOTBALL_DATA_TOKEN in .env — get a free key at football-data.org",
+  );
   process.exit(1);
 }
 
@@ -62,9 +64,7 @@ const teamOf = (t) =>
 function normalize(m) {
   const stage = STAGE_LABEL[m.stage] || m.stage;
   const group = m.group ? m.group.replace("GROUP_", "Group ") : null;
-  const label = group
-    ? `${group} · Matchday ${m.matchday}`
-    : stage;
+  const label = group ? `${group} · Matchday ${m.matchday}` : stage;
   const ft = (m.score && m.score.fullTime) || {};
   const hasScore = ft.home != null || ft.away != null;
   return {
@@ -84,7 +84,7 @@ function normalize(m) {
 async function pollOnce() {
   const res = await fetch(
     `https://api.football-data.org/v4/competitions/${COMPETITION}/matches`,
-    { headers: { "X-Auth-Token": TOKEN } }
+    { headers: { "X-Auth-Token": TOKEN } },
   );
   if (!res.ok) {
     console.error(`football-data ${res.status} ${res.statusText}`);
@@ -93,9 +93,11 @@ async function pollOnce() {
   const data = await res.json();
   const fixtures = (data.matches || []).map(normalize);
   await set(ref(db, "worldcup"), { fixtures, updatedAt: Date.now() });
-  const live = fixtures.filter((f) => f.status === "IN_PLAY" || f.status === "PAUSED").length;
+  const live = fixtures.filter(
+    (f) => f.status === "IN_PLAY" || f.status === "PAUSED",
+  ).length;
   console.log(
-    `${new Date().toISOString()}  wrote ${fixtures.length} fixtures (${live} live)`
+    `${new Date().toISOString()}  wrote ${fixtures.length} fixtures (${live} live)`,
   );
 }
 
